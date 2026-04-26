@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../redux/CartSlice";
+import { addItem } from "../redux/CartSlice";
 import Navbar from "./Navbar";
 
 const plants = [
@@ -16,17 +16,16 @@ const plants = [
   { id: 9, name: "Agave", price: 22, category: "Desert" }
 ];
 
-function ProductList() {
+function ProductList({ setPage }) {
   const dispatch = useDispatch();
   const { items } = useSelector(state => state.cart);
 
   const isInCart = (id) => items.some(item => item.id === id);
-
   const categories = [...new Set(plants.map(p => p.category))];
 
   return (
     <div>
-      <Navbar />
+      <Navbar setPage={setPage} />
       <h2>Plants</h2>
 
       {categories.map(category => (
@@ -37,11 +36,12 @@ function ProductList() {
             .filter(p => p.category === category)
             .map(p => (
               <div key={p.id}>
+                <img src="https://via.placeholder.com/100" alt={p.name} />
                 <h4>{p.name}</h4>
                 <p>${p.price}</p>
 
                 <button
-                  onClick={() => dispatch(addToCart(p))}
+                  onClick={() => dispatch(addItem(p))}
                   disabled={isInCart(p.id)}
                 >
                   {isInCart(p.id) ? "Added" : "Add to Cart"}
