@@ -7,19 +7,9 @@ function Navbar({ setPage }) {
 
   return (
     <div style={{ display: "flex", gap: "20px", background: "black", color: "white", padding: "10px" }}>
-      <h3 style={{ cursor: "pointer" }} onClick={() => setPage("home")}>
-        Paradise Nursery
-      </h3>
-
-      <span style={{ cursor: "pointer" }} onClick={() => setPage("home")}>
-        Home
-      </span>
-
-      <span style={{ cursor: "pointer" }} onClick={() => setPage("plants")}>
-        Plants
-      </span>
-
-      <span style={{ cursor: "pointer" }} onClick={() => setPage("cart")}>
+      <span onClick={() => setPage("home")} style={{ cursor: "pointer" }}>Home</span>
+      <span onClick={() => setPage("plants")} style={{ cursor: "pointer" }}>Plants</span>
+      <span onClick={() => setPage("cart")} style={{ cursor: "pointer" }}>
         Cart ({totalItems})
       </span>
     </div>
