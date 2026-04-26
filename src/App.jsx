@@ -10,8 +10,8 @@ function App() {
   if (page === "plants") return <ProductList setPage={setPage} />;
 
   return (
-    <div>
-      <h1>Paradise Nursery</h1>
+    <div className="app-container background-image">
+      <h1>Welcome to Paradise Nursery</h1>
       <AboutUs />
       <button onClick={() => setPage("plants")}>Get Started</button>
     </div>
