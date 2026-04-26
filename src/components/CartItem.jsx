@@ -1,31 +1,37 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { useSelector, useDispatch } from "react-redux";
+import { removeItem, updateQuantity } from "../redux/CartSlice";
+import Navbar from "./Navbar";
 
-const initialState = {
-  items: []
-};
+function CartItem({ setPage }) {
+  const { items } = useSelector(state => state.cart);
+  const dispatch = useDispatch();
 
-const cartSlice = createSlice({
-  name: "cart",
-  initialState,
-  reducers: {
-    addToCart: (state, action) => {
-      const item = state.items.find(i => i.id === action.payload.id);
-      if (item) item.quantity++;
-      else state.items.push({ ...action.payload, quantity: 1 });
-    },
-    removeFromCart: (state, action) => {
-      state.items = state.items.filter(i => i.id !== action.payload);
-    },
-    increaseQuantity: (state, action) => {
-      const item = state.items.find(i => i.id === action.payload);
-      if (item) item.quantity++;
-    },
-    decreaseQuantity: (state, action) => {
-      const item = state.items.find(i => i.id === action.payload);
-      if (item && item.quantity > 1) item.quantity--;
-    }
-  }
-});
+  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-export const { addToCart, removeFromCart, increaseQuantity, decreaseQuantity } = cartSlice.actions;
-export default cartSlice.reducer;
+  return (
+    <div>
+      <Navbar setPage={setPage} />
+      <h2>Shopping Cart</h2>
+
+      {items.map(item => (
+        <div key={item.id}>
+          <img src="https://via.placeholder.com/100" alt={item.name} />
+          <h3>{item.name}</h3>
+          <p>Unit Price: ${item.price}</p>
+          <p>Total: ${item.price * item.quantity}</p>
+
+          <button onClick={() => dispatch(updateQuantity({ id: item.id, amount: 1 }))}>+</button>
+          <button onClick={() => dispatch(updateQuantity({ id: item.id, amount: -1 }))}>-</button>
+          <button onClick={() => dispatch(removeItem(item.id))}>Delete</button>
+        </div>
+      ))}
+
+      <h3>Total Cart Amount: ${total}</h3>
+
+      <button onClick={() => alert("Coming Soon")}>Checkout</button>
+      <button onClick={() => setPage("plants")}>Continue Shopping</button>
+    </div>
+  );
+}
+
+export default CartItem;
